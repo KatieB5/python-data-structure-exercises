@@ -37,12 +37,13 @@ fm_frequencies = {
 def main():
     arg_dict = parse_args(sys.argv[1:])
     radio_station = arg_dict["radio_station"]
+
     for k, v in fm_frequencies.items():
         if v == radio_station:
             print(f"You can listen to {radio_station} on {k[:-4]} FM")
     else:
-        print(f"I don't know the frequency of {radio_station}")
-    # print("I know about {} FM radio stations".format(len(fm_frequencies)))
+        print(f"I don't know the frequency of {radio_station}. Here are the stations I do know about:")
+        list_stations()
 
 
 def parse_args(args):
@@ -57,6 +58,9 @@ def parse_args(args):
     )
     return vars(parser.parse_args(args))
 
+def list_stations():
+    for k, v in fm_frequencies.items():
+        print(f"{v}")
 
 if __name__ == "__main__":
     main()
