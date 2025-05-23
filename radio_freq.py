@@ -65,7 +65,7 @@ def get_args():
     return vars(parser.parse_args())
 
 def list_stations():
-    for k, v in fm_frequencies.items():
+    for v in fm_frequencies.values():
         print(f"{v}")
 
 def print_table_of_available_stations():
