@@ -34,7 +34,7 @@ fm_frequencies = {
 
 
 def main():
-    arg_dict = parse_args()
+    arg_dict = get_args()
     radio_station = arg_dict["radio_station"]
 
     for k, v in fm_frequencies.items():
@@ -46,7 +46,7 @@ def main():
         list_stations()
 
 
-def parse_args():
+def get_args():
     parser = argparse.ArgumentParser(
         prog="radio_freq",
         description="Display FM frequencies of known radio stations.",
