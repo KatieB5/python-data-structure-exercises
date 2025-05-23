@@ -37,7 +37,7 @@ def main():
     arg_dict = get_args()
     radio_station = arg_dict["radio_station"]
 
-    if radio_station == "":
+    if not radio_station:
         print_table_of_available_stations()
         return
 
