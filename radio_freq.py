@@ -37,6 +37,10 @@ def main():
     arg_dict = get_args()
     radio_station = arg_dict["radio_station"]
 
+    if radio_station == "":
+        print_table_of_available_stations()
+        return
+
     for k, v in fm_frequencies.items():
         if v == radio_station:
             print(f"You can listen to {radio_station} on {k[:-4]} FM")
@@ -54,6 +58,8 @@ def get_args():
     parser.add_argument(
         "radio_station",
         help="the name of the radio station",
+        nargs="?",
+        default="",
         type=str,
     )
     return vars(parser.parse_args())
@@ -61,6 +67,11 @@ def get_args():
 def list_stations():
     for k, v in fm_frequencies.items():
         print(f"{v}")
+
+def print_table_of_available_stations():
+        print(f"{"Frequencies":<11} | {"Station"}\n--------------------------")
+        for k, v in fm_frequencies.items():
+            print(f"{k:<11} | {v}")
 
 if __name__ == "__main__":
     main()
