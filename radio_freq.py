@@ -42,13 +42,12 @@ def main():
         return
 
     for k, v in fm_frequencies.items():
-        if v == radio_station:
+        if v.lower() == radio_station.lower():
             print(f"You can listen to {radio_station} on {k[:-4]} FM")
             return
-    else:
-        print(f"I don't know the frequency of {radio_station}. Here are the stations I do know about:")
-        list_stations()
 
+    print(f"I don't know the frequency of {radio_station}. Here are the stations I do know about:")
+    list_stations()
 
 def get_args():
     parser = argparse.ArgumentParser(
