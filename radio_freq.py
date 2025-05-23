@@ -15,7 +15,6 @@
 # $ python radio_freq.py "BBC Radio 5"
 # I don't know the frequency of BBC Radio 5
 
-import sys
 import argparse
 
 fm_frequencies = {
@@ -35,18 +34,19 @@ fm_frequencies = {
 
 
 def main():
-    arg_dict = parse_args(sys.argv[1:])
+    arg_dict = parse_args()
     radio_station = arg_dict["radio_station"]
 
     for k, v in fm_frequencies.items():
         if v == radio_station:
             print(f"You can listen to {radio_station} on {k[:-4]} FM")
+            return
     else:
         print(f"I don't know the frequency of {radio_station}. Here are the stations I do know about:")
         list_stations()
 
 
-def parse_args(args):
+def parse_args():
     parser = argparse.ArgumentParser(
         prog="radio_freq",
         description="Display FM frequencies of known radio stations.",
@@ -56,7 +56,7 @@ def parse_args(args):
         help="the name of the radio station",
         type=str,
     )
-    return vars(parser.parse_args(args))
+    return vars(parser.parse_args())
 
 def list_stations():
     for k, v in fm_frequencies.items():
