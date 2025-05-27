@@ -14,6 +14,8 @@
 # $ python rgb_colours.py "burnt sienna"
 # I don't know the RGB code for burnt sienna
 
+import argparse
+
 colours = [
     ['red', 'F00'],
     ['yellow', 'FF0'],
