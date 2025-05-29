@@ -26,7 +26,7 @@ colours = [
     ['magenta', 'F0F'],
 ]
 
-colours_dict = {name: rgb for name, rgb in colours}
+colours_dict = dict(colours)
 
 
 def main():
@@ -74,7 +74,8 @@ def is_arg_an_rgb_code(arg):
 
 def get_colour_from_rgb_code(rgb_code):
     corresponding_colour = [k for k, v in colours_dict.items() if v == rgb_code]
-    return None if corresponding_colour == [] else corresponding_colour[0]
+    if corresponding_colour:
+        return corresponding_colour[0]
 
 if __name__ == "__main__":
     main()
