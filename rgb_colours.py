@@ -33,17 +33,15 @@ def main():
     arg_dict = get_args()
     arg = arg_dict["colour_or_rgb"]
 
-    rgb_code = get_rgb_code(arg)
+    if get_rgb_code(arg):
+        print(f"The RGB code for {arg} is {get_rgb_code(arg)}")
 
-    if is_arg_an_rgb_code(arg):
+    elif is_arg_an_rgb_code(arg):
         colour = get_colour_from_rgb_code(arg.upper())
         if colour:
             print(f"The colour for RGB code {arg} is {colour}")
         else:
             print(f"I don't know the colour for RGB code {arg}")
-
-    elif rgb_code:
-        print(f"The RGB code for {arg} is {rgb_code}")
 
     else:
         print(f"I don't know the RGB code for {arg}")
@@ -65,8 +63,6 @@ def get_args():
     return vars(parser.parse_args())
 
 def get_rgb_code(colour):
-    # by default .get() returns None
-    # when used in conditional statements, None evaluates to False
     return colours_dict.get(colour.lower())
 
 def is_arg_an_rgb_code(arg):
