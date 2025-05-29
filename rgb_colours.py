@@ -32,6 +32,13 @@ def main():
     arg_dict = get_args()
     colour = arg_dict["colour"]
 
+    rgb_code = get_rgb_code(colour)
+
+    if rgb_code:
+        print(f"The RGB code for {colour} is {rgb_code}")
+    else:
+        print(f"I don't know the RGB code for {colour}")
+
 def get_args():
     parser = argparse.ArgumentParser(
         prog="rbg_colours",
@@ -48,6 +55,10 @@ def get_args():
 
     return vars(parser.parse_args())
 
+def get_rgb_code(colour):
+    # by default .get() returns None
+    # when used in conditional statements, None evaluates to False
+    return colours_dict.get(colour)
 
 if __name__ == "__main__":
     main()
