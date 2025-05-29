@@ -36,10 +36,15 @@ def main():
     rgb_code = get_rgb_code(arg)
 
     if is_arg_an_rgb_code(arg):
-        # need to handle rgb codes with no corresponding colour
-        print(f"The colour for RGB code {arg} is {[k for k, v in colours_dict.items() if v == arg][0]}")
+        corresponding_colour = [k for k, v in colours_dict.items() if v == arg]
+        if corresponding_colour:
+            print(f"The colour for RGB code {arg} is {corresponding_colour[0]}")
+        else:
+            print(f"I don't know the colour for RGB code {arg}")
+
     elif rgb_code:
         print(f"The RGB code for {arg} is {rgb_code}")
+
     else:
         print(f"I don't know the RGB code for {arg}")
 
