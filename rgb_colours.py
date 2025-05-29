@@ -16,6 +16,26 @@
 
 import argparse
 
+def main():
+    arg_dict = get_args()
+    colour = arg_dict["colour"]
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        prog="rbg_colours",
+        description="Display the RGB code for a corresponding colour"
+    )
+
+    parser.add_argument(
+        "colour",
+        help="the name of a colour",
+        nargs="?",
+        default="",
+        type=str,
+    )
+
+    return vars(parser.parse_args())
+
 colours = [
     ['red', 'F00'],
     ['yellow', 'FF0'],
@@ -25,6 +45,8 @@ colours = [
     ['magenta', 'F0F'],
 ]
 
+if __name__ == "__main__":
+    main()
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
