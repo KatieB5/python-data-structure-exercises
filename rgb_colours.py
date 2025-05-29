@@ -36,9 +36,9 @@ def main():
     rgb_code = get_rgb_code(arg)
 
     if is_arg_an_rgb_code(arg):
-        corresponding_colour = [k for k, v in colours_dict.items() if v == arg]
-        if corresponding_colour:
-            print(f"The colour for RGB code {arg} is {corresponding_colour[0]}")
+        colour = get_colour_from_rgb_code(arg.upper())
+        if colour:
+            print(f"The colour for RGB code {arg} is {colour}")
         else:
             print(f"I don't know the colour for RGB code {arg}")
 
@@ -67,10 +67,14 @@ def get_args():
 def get_rgb_code(colour):
     # by default .get() returns None
     # when used in conditional statements, None evaluates to False
-    return colours_dict.get(colour)
+    return colours_dict.get(colour.lower())
 
 def is_arg_an_rgb_code(arg):
     return bool(re.search('0', arg))
+
+def get_colour_from_rgb_code(rgb_code):
+    corresponding_colour = [k for k, v in colours_dict.items() if v == rgb_code]
+    return None if corresponding_colour == [] else corresponding_colour[0]
 
 if __name__ == "__main__":
     main()
