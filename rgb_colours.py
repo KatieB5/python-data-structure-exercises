@@ -31,16 +31,17 @@ colours_dict = {name: rgb for name, rgb in colours}
 
 def main():
     arg_dict = get_args()
-    colour = arg_dict["colour"]
+    arg = arg_dict["colour_or_rgb"]
 
-    rgb_code = get_rgb_code(colour)
+    rgb_code = get_rgb_code(arg)
 
-    if is_arg_an_rgb_code(colour):
-        print(f"The colour for RGB code {colour} is {rgb_code}")
+    if is_arg_an_rgb_code(arg):
+        # need to handle rgb codes with no corresponding colour
+        print(f"The colour for RGB code {arg} is {[k for k, v in colours_dict.items() if v == arg][0]}")
     elif rgb_code:
-        print(f"The RGB code for {colour} is {rgb_code}")
+        print(f"The RGB code for {arg} is {rgb_code}")
     else:
-        print(f"I don't know the RGB code for {colour}")
+        print(f"I don't know the RGB code for {arg}")
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -49,7 +50,7 @@ def get_args():
     )
 
     parser.add_argument(
-        "colour",
+        "colour_or_rgb",
         help="the name of a colour or an RGB colour code",
         nargs="?",
         default="",
