@@ -15,6 +15,7 @@
 # I don't know the RGB code for burnt sienna
 
 import argparse
+import re
 
 colours = [
     ['red', 'F00'],
@@ -34,7 +35,9 @@ def main():
 
     rgb_code = get_rgb_code(colour)
 
-    if rgb_code:
+    if is_arg_an_rgb_code(colour):
+        print(f"The colour for RGB code {colour} is {rgb_code}")
+    elif rgb_code:
         print(f"The RGB code for {colour} is {rgb_code}")
     else:
         print(f"I don't know the RGB code for {colour}")
@@ -42,12 +45,12 @@ def main():
 def get_args():
     parser = argparse.ArgumentParser(
         prog="rbg_colours",
-        description="Display the RGB code for a corresponding colour"
+        description="Display the RGB code for a corresponding colour, or display the colour for a corresponding RGB code"
     )
 
     parser.add_argument(
         "colour",
-        help="the name of a colour",
+        help="the name of a colour or an RGB colour code",
         nargs="?",
         default="",
         type=str,
@@ -59,6 +62,9 @@ def get_rgb_code(colour):
     # by default .get() returns None
     # when used in conditional statements, None evaluates to False
     return colours_dict.get(colour)
+
+def is_arg_an_rgb_code(arg):
+    return bool(re.search('0', arg))
 
 if __name__ == "__main__":
     main()
