@@ -16,6 +16,18 @@
 
 import argparse
 
+colours = [
+    ['red', 'F00'],
+    ['yellow', 'FF0'],
+    ['green', '0F0'],
+    ['cyan', '0FF'],
+    ['blue', '00F'],
+    ['magenta', 'F0F'],
+]
+
+colours_dict = {name: rgb for name, rgb in colours}
+
+
 def main():
     arg_dict = get_args()
     colour = arg_dict["colour"]
@@ -36,14 +48,6 @@ def get_args():
 
     return vars(parser.parse_args())
 
-colours = [
-    ['red', 'F00'],
-    ['yellow', 'FF0'],
-    ['green', '0F0'],
-    ['cyan', '0FF'],
-    ['blue', '00F'],
-    ['magenta', 'F0F'],
-]
 
 if __name__ == "__main__":
     main()
