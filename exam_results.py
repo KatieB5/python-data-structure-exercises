@@ -24,6 +24,7 @@
 # Geography: A
 # Music: B
 
+import sys
 
 subjects = ['Maths', 'Philosophy', 'Geography', 'Music']
 
@@ -36,9 +37,33 @@ grade_boundaries = {
     'F': [0, 29],
 }
 
-print('This program will ask you your marks in the following subjects:')
-for subject in subjects:
-    print(' * {}'.format(subject))
+student_marks = {}
+student_grades = {}
+
+def main():
+    get_marks()
+    get_grades()
+    print_grades()
+
+
+def get_marks():
+    for subject in subjects:
+        mark = input(f"What marks did you get in {subject}? ")
+        student_marks[subject] = int(mark)
+
+def get_grades():
+    for subject, mark in student_marks.items():
+        for grade, boundary in grade_boundaries.items():
+            if mark in range(boundary[0], boundary[1]+1):
+                student_grades[subject] = grade
+
+def print_grades():
+    print("\nYour_grades:\n\n" + "\n".join(f"{subject}: {grade}" for subject, grade in student_grades.items()))
+
+
+
+if __name__ == "__main__":
+    main()
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
