@@ -46,8 +46,23 @@ def main():
 
 def get_marks():
     for subject in subjects:
-        mark = input(f"What marks did you get in {subject}? ")
-        student_marks[subject] = int(mark)
+        while True:
+            mark = input(f"What marks did you get in {subject}? ")
+            if validate_mark(mark, subject):
+                break
+
+def validate_mark(mark, subject):
+    try:
+        mark = int(mark)
+        if 0 <= mark <= 100:
+            student_marks[subject] = mark
+            return True
+        else:
+            print("Please enter a number between 0 and 100.")
+            return False
+    except ValueError:
+        print("Please enter a valid number.")
+        return False
 
 def get_grades():
     for subject, mark in student_marks.items():
