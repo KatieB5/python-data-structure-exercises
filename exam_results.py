@@ -24,8 +24,6 @@
 # Geography: A
 # Music: B
 
-import sys
-
 subjects = ['Maths', 'Philosophy', 'Geography', 'Music']
 
 grade_boundaries = {
@@ -54,7 +52,7 @@ def get_marks():
 def get_grades():
     for subject, mark in student_marks.items():
         for grade, boundary in grade_boundaries.items():
-            if mark in range(boundary[0], boundary[1]+1):
+            if boundary[0] <= mark <= boundary[1]:
                 student_grades[subject] = grade
 
 def print_grades():
