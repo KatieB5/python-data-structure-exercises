@@ -54,9 +54,10 @@ def get_grades():
         for grade, boundary in grade_boundaries.items():
             if boundary[0] <= mark <= boundary[1]:
                 student_grades[subject] = grade
+                break
 
 def print_grades():
-    print("\nYour_grades:\n\n" + "\n".join(f"{subject}: {grade}" for subject, grade in student_grades.items()))
+    print("\nYour grades:\n\n" + "\n".join(f"{subject}: {grade}" for subject, grade in student_grades.items()))
 
 
 
