@@ -24,7 +24,7 @@
 # Geography: A
 # Music: B
 
-subjects = ['Maths', 'Philosophy', 'Geography', 'Music']
+subjects = []
 
 grade_boundaries = {
     'A': [70, 100],
@@ -39,6 +39,7 @@ student_marks = {}
 student_grades = {}
 
 def main():
+    get_subjects()
     get_marks()
     get_grades()
     print_grades()
@@ -74,7 +75,12 @@ def get_grades():
 def print_grades():
     print("\nYour grades:\n\n" + "\n".join(f"{subject}: {grade}" for subject, grade in student_grades.items()))
 
+def get_subjects():
+    num_of_subjects = int(input("How many subjects have you taken? "))
 
+    for i in range(num_of_subjects):
+        subject = input(f"Subject {i + 1}: ")
+        subjects.append(subject)
 
 if __name__ == "__main__":
     main()
