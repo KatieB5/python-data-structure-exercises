@@ -7,6 +7,7 @@
 # the group.
 #
 # NB Teams score three points for a win and one point for a draw.
+from functools import reduce
 
 results = [
         {'Austria': 0, 'Hungary': 2},
@@ -17,15 +18,47 @@ results = [
         {'Hungary': 3, 'Portugal': 3},
 ]
 
-print('There were {} matches in the group'.format(len(results)))
+def main():
+#match goals
+        [most_goals, fewest_goals] = get_match_goals()
+#team goals
+
+#team points
+
 
 # TODO: Write code to answer the following questions:
 
-print('The match with the most goals was', '?')
-print('The match with the fewest goals was', '?')
-print('The team with the most total goals was', '?')
-print('The team with the fewest total goals was', '?')
-print('The team with the most points was', '?')
-print('The team with the fewest points was', '?')
+        print(f'The match with the most goals was {most_goals}')
+        print(f'The match with the fewest goals was {fewest_goals}')
+        print('The team with the most total goals was', '?')
+        print('The team with the fewest total goals was', '?')
+        print('The team with the most points was', '?')
+        print('The team with the fewest points was', '?')
+
+def get_match_goals():
+      most_goals_count = get_goal_total(0)
+      most_goals_match = results[0]
+      fewest_goals_count = get_goal_total(0)
+      fewest_goals_match = results[0]
+
+      for i in range(1, len(results)):
+        goal_total = get_goal_total(i)
+        if goal_total > most_goals_count:
+             most_goals_count = goal_total
+             most_goals_match = results[i]
+        if goal_total < fewest_goals_count:
+             fewest_goals_count = goal_total
+             fewest_goals_match = results[i]
+
+      return [format_match(most_goals_match), format_match(fewest_goals_match)]
+
+def get_goal_total(i):
+     return reduce(lambda x, y: x+y, results[i].values())
+
+def format_match(match_obj):
+     return f"{list(match_obj.keys())[0]} vs {list(match_obj.keys())[1]}"
+
+if __name__ == "__main__":
+    main()
 
 # TODO (extra): Write code to compute and display a league table
