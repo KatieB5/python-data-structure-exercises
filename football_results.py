@@ -20,7 +20,7 @@ results = [
 
 def main():
 #match goals
-        [most_goals, fewest_goals] = get_match_goals()
+        most_goals, fewest_goals = get_match_goals()
 #team goals
 
 #team points
