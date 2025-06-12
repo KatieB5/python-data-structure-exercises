@@ -22,6 +22,8 @@ unique_teams = {k for dict in results for k in dict.keys()}
 
 team_goals = {team: 0 for team in unique_teams}
 
+team_points = {team: 0 for team in unique_teams}
+
 
 def main():
 #match goals
@@ -29,7 +31,7 @@ def main():
 #team goals
      team_most_goals, team_fewest_goals = get_team_goals()
 #team points
-
+     get_team_points()
 
 # TODO: Write code to answer the following questions:
 
@@ -64,9 +66,9 @@ def format_match(match_obj):
      return f"{list(match_obj.keys())[0]} vs {list(match_obj.keys())[1]}"
 
 def get_team_goals():
-     for i in range(len(results)):
-          teams = list(results[i].keys())
-          goals = list(results[i].values())
+     for match in results:
+          teams = list(match.keys())
+          goals = list(match.values())
 
           team_goals[teams[0]] += goals[0]
           team_goals[teams[1]] += goals[1]
@@ -77,6 +79,12 @@ def get_team_goals():
           team_fewest_goals = list(sorted_team_goals.keys())[0]
 
      return [team_most_goals, team_fewest_goals]
+
+def get_team_points():
+     for match in results:
+          goals = list(match.values())
+          if goals[0] > goals[1]:
+               pass
 
 if __name__ == "__main__":
     main()
