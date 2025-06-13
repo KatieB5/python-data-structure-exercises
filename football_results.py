@@ -11,8 +11,6 @@
 # ASSUMPTIONS:
 # 0-0 is a draw, both teams score 1 point.
 
-from functools import reduce
-
 results = [
         {'Austria': 0, 'Hungary': 2},
         {'Portugal': 1, 'Iceland': 1},
@@ -22,29 +20,20 @@ results = [
         {'Hungary': 3, 'Portugal': 3},
 ]
 
-unique_teams = {k for dict in results for k in dict.keys()}
-
-team_goals = {team: 0 for team in unique_teams}
-
-team_points = {team: 0 for team in unique_teams}
-
+unique_teams = {k for match in results for k in match}
 
 def main():
+     team_goals = {team: 0 for team in unique_teams}
+     team_points = {team: 0 for team in unique_teams}
 
      match_most_goals, match_fewest_goals = get_match_goals()
 
-     team_most_goals, team_fewest_goals = get_team_goals()
+     team_most_goals, team_fewest_goals = get_team_goals(team_goals)
 
-     team_most_points, team_fewest_points = get_team_points()
+     team_most_points, team_fewest_points = get_team_points(team_points)
 
-# TODO: Write code to answer the following questions:
+     print_results(match_most_goals, match_fewest_goals, team_most_goals, team_fewest_goals, team_most_points, team_fewest_points)
 
-     print(f'The match with the most goals was {match_most_goals}')
-     print(f'The match with the fewest goals was {match_fewest_goals}')
-     print(f'The team with the most total goals was {team_most_goals}')
-     print(f'The team with the fewest total goals was {team_fewest_goals}')
-     print(f'The team with the most points was {team_most_points}')
-     print(f'The team with the fewest points was {team_fewest_points}')
 
 def get_match_goals():
      most_goals_count = get_goal_total(0)
@@ -64,12 +53,12 @@ def get_match_goals():
      return [format_match(match_most_goals), format_match(match_fewest_goals)]
 
 def get_goal_total(i):
-     return reduce(lambda x, y: x+y, results[i].values())
+     return sum(results[i].values())
 
 def format_match(match_obj):
      return f"{list(match_obj.keys())[0]} vs {list(match_obj.keys())[1]}"
 
-def get_team_goals():
+def get_team_goals(team_goals):
      for match in results:
           teams = list(match.keys())
           goals = list(match.values())
@@ -77,19 +66,20 @@ def get_team_goals():
           team_goals[teams[0]] += goals[0]
           team_goals[teams[1]] += goals[1]
 
-          sorted_team_goals = {k: v for k, v in sorted(team_goals.items(), key=lambda item: item[1])}
-
-          team_most_goals = list(sorted_team_goals.keys())[len(sorted_team_goals) - 1]
-          team_fewest_goals = list(sorted_team_goals.keys())[0]
+     sorted_team_goals = sorted(team_goals.items(), key=lambda item: item[1])
+     team_fewest_goals = sorted_team_goals[0][0]
+     team_most_goals = sorted_team_goals[-1][0]
 
      return [team_most_goals, team_fewest_goals]
 
-def get_team_points():
+def get_team_points(team_points):
      for match in results:
           match_list = list(match.items())
           if match_list[0][1] > match_list[1][1]:
                team_points[match_list[0][0]] += 3
-          elif match_list[0][1] == match_list[1][1]:
+          elif match_list[1][1] > match_list[0][1]:
+               team_points[match_list[1][0]] += 3
+          else :
                team_points[match_list[0][0]] += 1
                team_points[match_list[1][0]] += 1
 
@@ -99,6 +89,14 @@ def get_team_points():
      team_fewest_points = list(sorted_team_points.keys())[0]
 
      return [team_most_points, team_fewest_points]
+
+def print_results(match_most_goals, match_fewest_goals, team_most_goals, team_fewest_goals, team_most_points, team_fewest_points):
+     print(f'The match with the most goals was {match_most_goals}')
+     print(f'The match with the fewest goals was {match_fewest_goals}')
+     print(f'The team with the most total goals was {team_most_goals}')
+     print(f'The team with the fewest total goals was {team_fewest_goals}')
+     print(f'The team with the most points was {team_most_points}')
+     print(f'The team with the fewest points was {team_fewest_points}')
 
 if __name__ == "__main__":
     main()
