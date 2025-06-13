@@ -7,6 +7,10 @@
 # the group.
 #
 # NB Teams score three points for a win and one point for a draw.
+
+# ASSUMPTIONS:
+# 0-0 is a draw, both teams score 1 point.
+
 from functools import reduce
 
 results = [
@@ -26,21 +30,21 @@ team_points = {team: 0 for team in unique_teams}
 
 
 def main():
-#match goals
+
      match_most_goals, match_fewest_goals = get_match_goals()
-#team goals
+
      team_most_goals, team_fewest_goals = get_team_goals()
-#team points
-     get_team_points()
+
+     team_most_points, team_fewest_points = get_team_points()
 
 # TODO: Write code to answer the following questions:
 
      print(f'The match with the most goals was {match_most_goals}')
      print(f'The match with the fewest goals was {match_fewest_goals}')
      print(f'The team with the most total goals was {team_most_goals}')
-     print(f'The team with the fewest total goals was {team_fewest_goals}?')
-     print('The team with the most points was', '?')
-     print('The team with the fewest points was', '?')
+     print(f'The team with the fewest total goals was {team_fewest_goals}')
+     print(f'The team with the most points was {team_most_points}')
+     print(f'The team with the fewest points was {team_fewest_points}')
 
 def get_match_goals():
      most_goals_count = get_goal_total(0)
@@ -82,9 +86,19 @@ def get_team_goals():
 
 def get_team_points():
      for match in results:
-          goals = list(match.values())
-          if goals[0] > goals[1]:
-               pass
+          match_list = list(match.items())
+          if match_list[0][1] > match_list[1][1]:
+               team_points[match_list[0][0]] += 3
+          elif match_list[0][1] == match_list[1][1]:
+               team_points[match_list[0][0]] += 1
+               team_points[match_list[1][0]] += 1
+
+     sorted_team_points = {k: v for k, v in sorted(team_points.items(), key=lambda item: item[1])}
+
+     team_most_points = list(sorted_team_points.keys())[len(sorted_team_points) - 1]
+     team_fewest_points = list(sorted_team_points.keys())[0]
+
+     return [team_most_points, team_fewest_points]
 
 if __name__ == "__main__":
     main()
