@@ -15,6 +15,7 @@
 # $ python bill_splitting.py Tim
 # Tim did not have dinner
 
+
 bill_items = [
     ['Tom', 'Calamari', 6.00],
     ['Tom', 'American Hot', 11.50],
@@ -32,6 +33,11 @@ bill_items = [
 
 print('There are {} items on the bill'.format(len(bill_items)))
 
+def main():
+    pass
+
+if __name__ == "__main":
+    main()
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
