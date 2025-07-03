@@ -18,7 +18,7 @@
 import argparse
 import itertools
 
-bill_items = [
+BILL_ITEMS = [
     ["Tom", "Calamari", 6.00],
     ["Tom", "American Hot", 11.50],
     ["Tom", "Chocolate Fudge Cake", 4.45],
@@ -37,7 +37,7 @@ bill_items = [
 def get_names_for_keys(bill_item):
     return bill_item[0]
 
-orders_by_individual = {key: [subgroup[1:] for subgroup in list(group)] for key, group in itertools.groupby(bill_items, key=get_names_for_keys)}
+ORDERS_BY_INDIVIDUAL = {key: [subgroup[1:] for subgroup in list(group)] for key, group in itertools.groupby(BILL_ITEMS, key=get_names_for_keys)}
 
 
 def main():
@@ -63,7 +63,7 @@ def get_args():
 
 
 def print_individual_bill_amount(name):
-    individual_orders = orders_by_individual.get(name)
+    individual_orders = ORDERS_BY_INDIVIDUAL.get(name)
 
     if individual_orders is None:
         print(f"{name} did not have dinner")
