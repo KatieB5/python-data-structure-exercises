@@ -43,6 +43,7 @@ ORDERS_BY_INDIVIDUAL = {key: [subgroup[1:] for subgroup in list(group)] for key,
 def main():
     name = get_args().get('name')
     print_individual_bill_amount(name)
+    print_order_breakdown()
 
 
 def get_args():
@@ -77,6 +78,10 @@ def print_individual_bill_amount(name):
 def print_message(name, total_amount_owed_by_individual):
     print(f"{name} should pay {total_amount_owed_by_individual}")
 
+def print_order_breakdown():
+    print("\nHere is a breakdown of what each person had to eat:")
+    for person, order in ORDERS_BY_INDIVIDUAL.items():
+        print(f"{person} ate the following dishes: {', '.join(dish[0] for dish in order)}")
 
 if __name__ == "__main__":
     main()
