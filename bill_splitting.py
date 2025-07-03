@@ -69,13 +69,13 @@ def print_individual_bill_amount(name):
         print(f"{name} did not have dinner")
         return
 
-    total_amount_owed = sum(order[1] for order in individual_orders)
+    total_amount_owed_by_individual = sum(order[1] for order in individual_orders)
 
-    print_message(name, total_amount_owed)
+    print_message(name, total_amount_owed_by_individual)
 
 
-def print_message(name, individual_bill_amount):
-    print(f"{name} should pay {individual_bill_amount}")
+def print_message(name, total_amount_owed_by_individual):
+    print(f"{name} should pay {total_amount_owed_by_individual}")
 
 
 if __name__ == "__main__":
