@@ -16,6 +16,7 @@
 # Tim did not have dinner
 
 import argparse
+import itertools
 
 bill_items = [
     ["Tom", "Calamari", 6.00],
@@ -33,8 +34,16 @@ bill_items = [
 ]
 
 
+def get_names_for_keys(bill_item):
+    return bill_item[0]
+
+orders_by_individual = {key: [subgroup[1:] for subgroup in list(group)] for key, group in itertools.groupby(bill_items, key=get_names_for_keys)}
+
+
 def main():
-    name = get_args()
+    name = get_args().get('name')
+    individual_bill_amount = get_individual_bill_amount(name)
+    print_message(name, individual_bill_amount)
 
 
 def get_args():
@@ -53,6 +62,14 @@ def get_args():
 
     return vars(parser.parse_args())
 
+
+def get_individual_bill_amount(name):
+    individual_orders = orders_by_individual.get(name)
+    total_amount_owed = sum(order[1] for order in individual_orders)
+    return total_amount_owed
+
+def print_message(name, individual_bill_amount):
+    print(f"{name} should pay {individual_bill_amount}")
 
 if __name__ == "__main__":
     main()
