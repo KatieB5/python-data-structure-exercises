@@ -42,8 +42,7 @@ orders_by_individual = {key: [subgroup[1:] for subgroup in list(group)] for key,
 
 def main():
     name = get_args().get('name')
-    individual_bill_amount = get_individual_bill_amount(name)
-    print_message(name, individual_bill_amount)
+    print_individual_bill_amount(name)
 
 
 def get_args():
@@ -63,13 +62,21 @@ def get_args():
     return vars(parser.parse_args())
 
 
-def get_individual_bill_amount(name):
+def print_individual_bill_amount(name):
     individual_orders = orders_by_individual.get(name)
+
+    if individual_orders is None:
+        print(f"{name} did not have dinner")
+        return
+
     total_amount_owed = sum(order[1] for order in individual_orders)
-    return total_amount_owed
+
+    print_message(name, total_amount_owed)
+
 
 def print_message(name, individual_bill_amount):
     print(f"{name} should pay {individual_bill_amount}")
+
 
 if __name__ == "__main__":
     main()
