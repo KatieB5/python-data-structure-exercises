@@ -37,11 +37,17 @@ BILL_ITEMS = [
 def get_names_for_keys(bill_item):
     return bill_item[0]
 
-ORDERS_BY_INDIVIDUAL = {key: [subgroup[1:] for subgroup in list(group)] for key, group in itertools.groupby(BILL_ITEMS, key=get_names_for_keys)}
+
+ORDERS_BY_INDIVIDUAL = {
+    key: [subgroup[1:] for subgroup in list(group)]
+    for key, group in itertools.groupby(
+        sorted(BILL_ITEMS, key=get_names_for_keys), key=get_names_for_keys
+    )
+}
 
 
 def main():
-    name = get_args().get('name')
+    name = get_args().get("name")
     if name is None:
         print_order_table()
     else:
@@ -57,7 +63,7 @@ def get_args():
 
     parser.add_argument(
         "name",
-        help="The name of the person who's total order amount you want",
+        help="The name of the person whose total order amount you want",
         nargs="?",
         type=str,
     )
@@ -80,16 +86,26 @@ def print_individual_bill_amount(name):
 def print_message(name, total_amount_owed_by_individual):
     print(f"{name} should pay {total_amount_owed_by_individual}")
 
+
 def print_order_breakdown():
     print("\nHere is a breakdown of what each person had to eat:")
     for person, order in ORDERS_BY_INDIVIDUAL.items():
-        print(f"{person} ate the following dishes: {', '.join(dish[0] for dish in order)}")
+        print(
+            f"{person} ate the following dishes: {', '.join(dish[0] for dish in order)}"
+        )
+
 
 def print_order_table():
-    print("\nHere is a breakdown of what each person had to eat and the amount they owe:\n")
-    print(f"{"Name":<11} | {"Starter":<20} | {"Main":<15}| {"Dessert":<22} | {"Amount owed (£)"}\n----------------------------------------------------------------------------------------------")
+    print(
+        "\nHere is a breakdown of what each person had to eat and the amount they owe:\n"
+    )
+    print(
+        f"{'Name':<11} | {'Starter':<20} | {'Main':<15} | {'Dessert':<22} | {'Amount owed (£)'}\n----------------------------------------------------------------------------------------------"
+    )
     for person, orders in ORDERS_BY_INDIVIDUAL.items():
-        print(f"{person:<11} | {orders[0][0]:<20} | {orders[1][0]:<14} | {orders[2][0]:<22} | {sum(order[1] for order in orders)}")
+        print(
+            f"{person:<11} | {orders[0][0]:<20} | {orders[1][0]:<15} | {orders[2][0]:<22} | {sum(order[1] for order in orders)}"
+        )
 
 
 if __name__ == "__main__":
