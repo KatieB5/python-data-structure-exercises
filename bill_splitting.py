@@ -16,7 +16,6 @@
 # Tim did not have dinner
 
 import sys
-import itertools
 import collections
 
 BILL_ITEMS = [
@@ -35,20 +34,7 @@ BILL_ITEMS = [
 ]
 
 
-def get_names_for_keys(bill_item):
-    return bill_item[0]
-
-
-ORDERS_BY_INDIVIDUAL = {
-    key: [subgroup[1:] for subgroup in list(group)]
-    for key, group in itertools.groupby(
-        sorted(BILL_ITEMS, key=get_names_for_keys), key=get_names_for_keys
-    )
-}
-
-
 def main(name):
-    print(name)
     if name is None:
         print_order_table()
     else:
@@ -58,20 +44,18 @@ def main(name):
 
 def print_individual_bill_amount(name):
 
-    amount_owed = get_individual_amount_owed(name)
-
-    if amount_owed is None:
+    if get_amounts_owed().get(name) is None:
         print(f"{name} did not have dinner")
         return
 
-    print(f"{name} should pay {amount_owed}")
+    print(f"{name} should pay {get_amounts_owed().get(name)}")
 
 
 def print_order_breakdown():
     print("\nHere is a breakdown of what each person had to eat:")
-    for person, order in ORDERS_BY_INDIVIDUAL.items():
+    for person, order in get_dishes_and_prices().items():
         print(
-            f"{person} ate the following dishes: {', '.join(dish[0] for dish in order)}"
+            f"{person} ate the following dishes: {', '.join(dish for dish in order[1])}"
         )
 
 
@@ -82,20 +66,25 @@ def print_order_table():
     print(
         f"{'Name':<11} | {'Starter':<20} | {'Main':<15} | {'Dessert':<22} | {'Amount owed (£)'}\n----------------------------------------------------------------------------------------------"
     )
-    for person, orders in ORDERS_BY_INDIVIDUAL.items():
+    for person, orders in get_dishes_and_prices().items():
         print(
-            f"{person:<11} | {orders[0][0]:<20} | {orders[1][0]:<15} | {orders[2][0]:<22} | {sum(order[1] for order in orders)}"
+            f"{person:<11} | {orders[1][0]:<20} | {orders[1][1]:<15} | {orders[1][2]:<22} | {orders[0]}"
         )
 
-def get_individual_amount_owed(name):
-    amount_owed_dict = collections.defaultdict(list)
+def get_amounts_owed():
+    amount_owed_dict = collections.defaultdict(float)
     for order in BILL_ITEMS:
-        amount_owed_dict[order[0]].append(order[2])
+        amount_owed_dict[order[0]] += order[2]
 
-    if amount_owed_dict.get(name):
-        return sum(amount_owed_dict.get(name))
-    else:
-        return None
+    return amount_owed_dict
+
+def get_dishes_and_prices():
+    orders_dict = get_amounts_owed()
+    for person in orders_dict.keys():
+        dishes = [order[1] for order in BILL_ITEMS if order[0] == person]
+        orders_dict[person] = [orders_dict[person], dishes]
+
+    return orders_dict
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
