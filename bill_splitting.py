@@ -17,6 +17,7 @@
 
 import sys
 import itertools
+import collections
 
 BILL_ITEMS = [
     ["Tom", "Calamari", 6.00],
@@ -56,19 +57,14 @@ def main(name):
 
 
 def print_individual_bill_amount(name):
-    individual_orders = ORDERS_BY_INDIVIDUAL.get(name)
 
-    if individual_orders is None:
+    amount_owed = get_individual_amount_owed(name)
+
+    if amount_owed is None:
         print(f"{name} did not have dinner")
         return
 
-    total_amount_owed_by_individual = sum(order[1] for order in individual_orders)
-
-    print_message(name, total_amount_owed_by_individual)
-
-
-def print_message(name, total_amount_owed_by_individual):
-    print(f"{name} should pay {total_amount_owed_by_individual}")
+    print(f"{name} should pay {amount_owed}")
 
 
 def print_order_breakdown():
@@ -91,6 +87,15 @@ def print_order_table():
             f"{person:<11} | {orders[0][0]:<20} | {orders[1][0]:<15} | {orders[2][0]:<22} | {sum(order[1] for order in orders)}"
         )
 
+def get_individual_amount_owed(name):
+    amount_owed_dict = collections.defaultdict(list)
+    for order in BILL_ITEMS:
+        amount_owed_dict[order[0]].append(order[2])
+
+    if amount_owed_dict.get(name):
+        return sum(amount_owed_dict.get(name))
+    else:
+        return None
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
