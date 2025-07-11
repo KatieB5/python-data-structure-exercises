@@ -119,3 +119,7 @@ if __name__ == "__main__":
 #   person had to eat.
 # * Change the program so that if it is called without arguments, a table of
 #   how much everybody should pay is displayed
+
+# TODO (extra-extra):
+# * Use collections.defaultdict
+# * Use sys.argv
