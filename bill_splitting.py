@@ -43,12 +43,12 @@ def main(name):
 
 
 def print_individual_bill_amount(name):
-
-    if get_amounts_owed().get(name) is None:
+    amount_owed = get_amounts_owed().get(name)
+    if amount_owed is None:
         print(f"{name} did not have dinner")
         return
 
-    print(f"{name} should pay {get_amounts_owed().get(name)}")
+    print(f"{name} should pay {amount_owed}")
 
 
 def print_order_breakdown():
