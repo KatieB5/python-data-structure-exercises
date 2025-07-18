@@ -40,14 +40,29 @@ SCHEDULE = {
     },
 }
 
-def main():
+def get_args():
     try:
         room = sys.argv[1]
         time = sys.argv[2]
     except IndexError:
         room = ""
         time = ""
+    return [room, time]
 
+def get_session(room, time, schedule):
+    session = schedule[room].get(time, "")
+    return session
+
+def print_message(session, room, time):
+    if session:
+        print(f"'{session}' is starting in the {room} at {time}")
+    else:
+        print(f"There are no sessions starting in the {room} at {time}")
+
+def main():
+    room, time = get_args()
+    session = get_session(room, time, SCHEDULE)
+    print_message(session, room, time)
 
 if __name__ == "__main__":
     main()
