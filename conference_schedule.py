@@ -9,8 +9,9 @@
 # For instance:
 #
 # $ python conference_schedule.py "Main Hall" 13:30
-# 
+#
 
+import sys
 
 SCHEDULE = {
     'Main Hall': {
@@ -38,6 +39,18 @@ SCHEDULE = {
         '16:00': 'The state of PyPy',
     },
 }
+
+def main():
+    try:
+        room = sys.argv[1]
+        time = sys.argv[2]
+    except IndexError:
+        room = ""
+        time = ""
+
+
+if __name__ == "__main__":
+    main()
 
 
 # TODO:
