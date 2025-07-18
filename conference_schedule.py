@@ -12,7 +12,7 @@
 # 
 
 
-schedule = {
+SCHEDULE = {
     'Main Hall': {
         '10:00': 'Django REST framework',
         '11:00': 'Lessons learned from PHP',
@@ -38,8 +38,6 @@ schedule = {
         '16:00': 'The state of PyPy',
     },
 }
-
-print('There are talks scheduled in {} rooms'.format(len(schedule)))
 
 
 # TODO:
