@@ -86,11 +86,13 @@ def get_dishes_and_prices(items_list):
 
     return orders_dict
 
+def parse_args(argv):
+    _, name, *_ = argv + [None]
+    return name
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        main(None)
-    else:
-        main(sys.argv[1])
+    name = parse_args(sys.argv)
+    main(name)
 
 # TODO:
 # * Implement the program as described in the comments at the top of the file.
