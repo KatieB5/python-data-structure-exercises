@@ -35,41 +35,42 @@ BILL_ITEMS = [
 
 
 def main(name):
-    if name is None:
-        print_order_table(BILL_ITEMS)
+    message = get_message(BILL_ITEMS, name)
+    print_message(message)
+
+def get_message(items_list, name):
+    if name:
+        bill_amount = get_individual_bill_amount(items_list, name)
+        order_breakdown = get_order_breakdown(items_list)
+        return bill_amount + order_breakdown
     else:
-        print_individual_bill_amount(BILL_ITEMS, name)
-        print_order_breakdown(BILL_ITEMS)
+        return get_order_table(items_list)
 
 
-def print_individual_bill_amount(items_list, name):
+def get_individual_bill_amount(items_list, name):
     amount_owed = get_amounts_owed(items_list).get(name)
-    if amount_owed is None:
-        print(f"{name} did not have dinner")
-        return
+    if amount_owed:
+        return f"{name} should pay {amount_owed}"
+    else:
+        return f"{name} did not have dinner"
 
-    print(f"{name} should pay {amount_owed}")
 
-
-def print_order_breakdown(items_list):
-    print("\nHere is a breakdown of what each person had to eat:")
+def get_order_breakdown(items_list):
+    output = "\nHere is a breakdown of what each person had to eat:\n"
     for person, order in get_dishes_and_prices(items_list).items():
-        print(
-            f"{person} ate the following dishes: {', '.join(dish for dish in order[1])}"
-        )
+        output += f"{person} ate the following dishes: {', '.join(dish for dish in order[1])}\n"
+    return output
 
 
-def print_order_table(items_list):
-    print(
-        "\nHere is a breakdown of what each person had to eat and the amount they owe:\n"
-    )
-    print(
-        f"{'Name':<11} | {'Starter':<20} | {'Main':<15} | {'Dessert':<22} | {'Amount owed (£)'}\n----------------------------------------------------------------------------------------------"
-    )
-    for person, orders in get_dishes_and_prices(items_list).items():
-        print(
-            f"{person:<11} | {orders[1][0]:<20} | {orders[1][1]:<15} | {orders[1][2]:<22} | {orders[0]}"
-        )
+def get_order_table(items_list):
+    intro = "\nHere is a breakdown of what each person had to eat and the amount they owe:\n\n"
+    headings = f"{'Name':<11} | {'Starter':<20} | {'Main':<15} | {'Dessert':<22} | {'Amount owed (£)'}\n----------------------------------------------------------------------------------------------\n"
+    order_details = "".join([
+        f"{person:<11} | {orders[1][0]:<20} | {orders[1][1]:<15} | {orders[1][2]:<22} | {orders[0]}\n"
+        for person, orders in get_dishes_and_prices(items_list).items()
+    ])
+
+    return intro + headings + order_details
 
 def get_amounts_owed(items_list):
     amount_owed_dict = collections.defaultdict(float)
@@ -85,6 +86,9 @@ def get_dishes_and_prices(items_list):
         orders_dict[person] = [orders_dict[person], dishes]
 
     return orders_dict
+
+def print_message(message_string):
+    print(message_string)
 
 def parse_args(argv):
     _, name, *_ = argv + [None]
