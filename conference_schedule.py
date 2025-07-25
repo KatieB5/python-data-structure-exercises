@@ -50,14 +50,19 @@ def get_args():
     return [room, time]
 
 def get_session(room, time, schedule):
-    session = schedule[room].get(time, "")
+    hour = time[:2]
+    session = ""
+    for room, sessions in schedule.items():
+        for time, title in sessions.items():
+            if hour in time:
+                session = title
     return session
 
 def print_message(session, room, time):
     if session:
-        print(f"'{session}' is starting in the {room} at {time}")
+        print(f"'{session}' is running in the {room} at {time}")
     else:
-        print(f"There are no sessions starting in the {room} at {time}")
+        print(f"There are no sessions running in the {room} at {time}")
 
 def main():
     room, time = get_args()
