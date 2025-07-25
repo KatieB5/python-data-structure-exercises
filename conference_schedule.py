@@ -14,29 +14,29 @@
 import sys
 
 SCHEDULE = {
-    'Main Hall': {
-        '10:00': 'Django REST framework',
-        '11:00': 'Lessons learned from PHP',
-        '12:00': "Tech interviews that don't suck",
-        '14:00': 'Taking control of your Bluetooth devices',
-        '15:00': "Fast Python? Don't Bother!",
-        '16:00': 'Test-Driven Data Analysis',
+    "Main Hall": {
+        "10:00": "Django REST framework",
+        "11:00": "Lessons learned from PHP",
+        "12:00": "Tech interviews that don't suck",
+        "14:00": "Taking control of your Bluetooth devices",
+        "15:00": "Fast Python? Don't Bother!",
+        "16:00": "Test-Driven Data Analysis",
     },
-    'Seminar Room': {
-        '10:00': 'Python in my Science Classroom',
-        '11:00': 'My journey from wxPython tp PyQt',
-        '12:00': 'Easy solutions to hard problems',
-        '14:00': 'Taking control of your Bluetooth devices',
-        '15:00': "Euler's Key to Cryptography",
-        '16:00': 'Build your Microservices with ZeroMQ',
+    "Seminar Room": {
+        "10:00": "Python in my Science Classroom",
+        "11:00": "My journey from wxPython tp PyQt",
+        "12:00": "Easy solutions to hard problems",
+        "14:00": "Taking control of your Bluetooth devices",
+        "15:00": "Euler's Key to Cryptography",
+        "16:00": "Build your Microservices with ZeroMQ",
     },
-    'Assembly Hall': {
-        '10:00': 'Distributed systems from scratch',
-        '11:00': 'Python in Medicine: ventilator data',
-        '12:00': 'Neurodiversity in Technology',
-        '14:00': 'Chat bots: What is AI?',
-        '15:00': 'Pygame Zero',
-        '16:00': 'The state of PyPy',
+    "Assembly Hall": {
+        "10:00": "Distributed systems from scratch",
+        "11:00": "Python in Medicine: ventilator data",
+        "12:00": "Neurodiversity in Technology",
+        "14:00": "Chat bots: What is AI?",
+        "15:00": "Pygame Zero",
+        "16:00": "The state of PyPy",
     },
 }
 
@@ -49,14 +49,16 @@ def get_args():
         time = ""
     return [room, time]
 
+
 def get_session(room, time, schedule):
     hour = time[:2]
     session = ""
     for room, sessions in schedule.items():
-        for time, title in sessions.items():
-            if hour in time:
+        for session_time, title in sessions.items():
+            if hour in session_time:
                 session = title
     return session
+
 
 def print_message(session, room, time):
     if session:
@@ -64,10 +66,12 @@ def print_message(session, room, time):
     else:
         print(f"There are no sessions running in the {room} at {time}")
 
+
 def main():
     room, time = get_args()
     session = get_session(room, time, SCHEDULE)
     print_message(session, room, time)
+
 
 if __name__ == "__main__":
     main()
