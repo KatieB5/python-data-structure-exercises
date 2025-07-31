@@ -4,22 +4,30 @@ from presidents_data import presidents_by_party
 
 from collections import namedtuple
 
-print('There have been presidents from {} different parties'.format(len(presidents_by_party)))
+def main():
+    presidents = get_presidents_data(presidents_by_party)
 
-President = namedtuple('President', [
-    'name', 'party', 'born', 'took_office', 'left_office'
-])
+def get_presidents_data(presidents_data):
+    President = namedtuple('President', [
+        'name', 'party', 'born', 'took_office', 'left_office'
+    ])
 
-presidents = []
+    presidents = []
 
-for party, presidents_list in presidents_by_party.items():
-    for president in presidents_list:
-        president = President(name = president["name"], party=party,
-                born=president["born"],
-                took_office=president["took_office"],
-                left_office=president["left_office"]
-            )
-        presidents.append(president)
+    for party, presidents_list in presidents_data.items():
+        for president in presidents_list:
+            president = President(name = president["name"], party=party,
+                    born=president["born"],
+                    took_office=president["took_office"],
+                    left_office=president["left_office"]
+                )
+            presidents.append(president)
+
+    return presidents
+
+
+if __name__ == "__main__":
+    main()
 
 # TODO:
 # * Display a report that answers the following questions:
