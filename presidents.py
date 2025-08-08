@@ -1,8 +1,9 @@
 from datetime import date, datetime
+from collections import namedtuple, Counter
+from statistics import mean
 
 from presidents_data import presidents_by_party
 
-from collections import namedtuple, Counter
 
 def main():
     president_namedtuples = get_presidents_data(presidents_by_party)
@@ -11,7 +12,8 @@ def main():
     oldest_dem = get_est_pres(president_namedtuples, "oldest", "Democratic")
     youngest_pres = get_est_pres(president_namedtuples, "youngest")
     oldest_pres = get_est_pres(president_namedtuples, "oldest")
-    output_message(party, youngest_rep, oldest_dem, youngest_pres, oldest_pres)
+    mean_age = get_mean_age(president_namedtuples)
+    output_message(party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age)
 
 def get_presidents_data(data_dict):
     President = namedtuple('President', [
@@ -42,15 +44,12 @@ def get_presidents_data(data_dict):
 def get_party_with_most_presidents(presidents):
     """Create a Counter object to then use most_common([n]) to return a
     list with a tuple containing the most common presidential party and
-    the count. The access and return the name of the party."""
+    the count. Then return the name of the party."""
     party_counts = Counter(p.party for p in presidents)
     return party_counts.most_common(1)[0][0]
 
 def get_est_pres(presidents, youngest_or_oldest, pres_party=None):
-    """Get a list of all presidents for a given party, then return the
-    name of the oldest or youngest president depending on the args
-    passed into the function. If no party is specified, return the
-    oldest or youngest president overall"""
+    """Return the name of the oldest or youngest president depending on the args passed into the function. If no party is specified, return the oldest or youngest president overall"""
     if pres_party is None:
         party_presidents = presidents
     else:
@@ -58,6 +57,9 @@ def get_est_pres(presidents, youngest_or_oldest, pres_party=None):
 
     min_max = min if youngest_or_oldest == "youngest" else max
     return min_max(party_presidents, key=lambda p: p.took_office_age).name
+
+def get_mean_age(presidents):
+    return mean([p.took_office_age for p in presidents])
 
 def output_message(*args):
     print(args)
