@@ -13,25 +13,25 @@ def main():
     youngest_pres = get_est_pres(president_namedtuples, "youngest")
     oldest_pres = get_est_pres(president_namedtuples, "oldest")
     mean_age = get_mean_age(president_namedtuples)
-    month = get_month(president_namedtuples)
+    month = get_month_or_year(president_namedtuples, "month")
+    year = get_month_or_year(president_namedtuples, "Year")
     output_message(
-        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month
+        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month, year
     )
 
 
 def get_presidents_data(data_dict):
     President = namedtuple(
         "President",
-        ["name", "party", "born", "took_office", "took_office_age", "left_office"],
+        ["name", "party", "born", "took_office", "took_office_age", "left_office", "in_office"],
     )
 
     presidents = []
 
     for party, presidents_list in data_dict.items():
         for president in presidents_list:
-            born_date = president["born"]
-            took_office_date = president["took_office"]
-            age_at_office = (took_office_date - born_date).days // 365
+            age_at_office = (president["took_office"] - president["born"]).days // 365
+            time_in_office = (president["left_office"] - president["born"]).days
 
             president = President(
                 name=president["name"],
@@ -40,6 +40,7 @@ def get_presidents_data(data_dict):
                 took_office=president["took_office"],
                 took_office_age=age_at_office,
                 left_office=president["left_office"],
+                in_office=time_in_office
             )
 
             presidents.append(president)
@@ -62,23 +63,23 @@ def get_est_pres(presidents, youngest_or_oldest, pres_party=None):
     else:
         party_presidents = [p for p in presidents if p.party == pres_party]
 
-    min_max = min if youngest_or_oldest == "youngest" else max
+    min_max = min if youngest_or_oldest.lower() == "youngest" else max
     return min_max(party_presidents, key=lambda p: p.took_office_age).name
 
 
 def get_mean_age(presidents):
     return mean([p.took_office_age for p in presidents])
 
-def get_month(presidents):
-    """Create a Counter object to then use most_common([n]) to return a
-    list with a tuple containing the most common month for presidents to take office and the count. Then return the name of the month."""
-    month_counts = Counter(p.took_office.strftime("%B") for p in presidents)
+def get_month_or_year(presidents, time_string):
+    """Return the most common month or year for presidents to take office, then return it, depending on the args passed into the function."""
+    dt_format  = "%B" if time_string.lower() == "month" else "%Y"
+    month_counts = Counter(p.took_office.strftime(dt_format) for p in presidents)
     return month_counts.most_common(1)[0][0]
 
 
 def output_message(*args):
     intro = "\nHere are some facts about US presidents:\n\n"
-    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office"
+    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office.\n"
     print(intro, text)
 
 
@@ -93,7 +94,9 @@ if __name__ == "__main__":
 #   * Who was the youngest president (from any party) when they took office?
 #   * Who was the oldest president (from any party) when they took office?
 #   * Which month saw the most presidents take office?
+#   * What is the average age of becoming president?
+
+# TODO still:
 #   * Which decade saw the most presidents take office?
 #   * Which party has been in power for longest?
-#   * What is the average age of becoming president?
 #   * Which presidents have taken office more than once?
