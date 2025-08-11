@@ -13,8 +13,9 @@ def main():
     youngest_pres = get_est_pres(president_namedtuples, "youngest")
     oldest_pres = get_est_pres(president_namedtuples, "oldest")
     mean_age = get_mean_age(president_namedtuples)
+    month = get_month(president_namedtuples)
     output_message(
-        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age
+        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month
     )
 
 
@@ -55,7 +56,7 @@ def get_party_with_most_presidents(presidents):
 
 
 def get_est_pres(presidents, youngest_or_oldest, pres_party=None):
-    """Return the name of the oldest or youngest president depending on the args passed into the function. If no party is specified, return the oldest or youngest president overall"""
+    """Return the name of the oldest or youngest president depending on the args passed into the function. If no party is specified, return the oldest or youngest president overall."""
     if pres_party is None:
         party_presidents = presidents
     else:
@@ -68,10 +69,16 @@ def get_est_pres(presidents, youngest_or_oldest, pres_party=None):
 def get_mean_age(presidents):
     return mean([p.took_office_age for p in presidents])
 
+def get_month(presidents):
+    """Create a Counter object to then use most_common([n]) to return a
+    list with a tuple containing the most common month for presidents to take office and the count. Then return the name of the month."""
+    month_counts = Counter(p.took_office.strftime("%B") for p in presidents)
+    return month_counts.most_common(1)[0][0]
+
 
 def output_message(*args):
     intro = "\nHere are some facts about US presidents:\n\n"
-    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president."
+    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office"
     print(intro, text)
 
 
