@@ -1,6 +1,7 @@
 from datetime import date, datetime
-from collections import namedtuple, Counter
+from collections import namedtuple, Counter, defaultdict
 from statistics import mean
+from operator import itemgetter
 
 from presidents_data import presidents_by_party
 
@@ -15,8 +16,9 @@ def main():
     mean_age = get_mean_age(president_namedtuples)
     month = get_month_or_year(president_namedtuples, "month")
     year = get_month_or_year(president_namedtuples, "Year")
+    in_power_longest = get_in_power_longest(president_namedtuples)
     output_message(
-        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month, year
+        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month, year, in_power_longest
     )
 
 
@@ -76,10 +78,16 @@ def get_month_or_year(presidents, time_string):
     month_counts = Counter(p.took_office.strftime(dt_format) for p in presidents)
     return month_counts.most_common(1)[0][0]
 
+def get_in_power_longest(presidents):
+    d = defaultdict(int)
+    for p in presidents:
+        d[p.party] += p.in_office
+    return sorted(d.items(), key=itemgetter(1))[-1][0]
+
 
 def output_message(*args):
     intro = "\nHere are some facts about US presidents:\n\n"
-    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office.\n"
+    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office.\n The {args[8]} party has been in power for longest."
     print(intro, text)
 
 
