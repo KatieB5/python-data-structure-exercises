@@ -50,7 +50,7 @@ def get_presidents_data(data_dict):
     for party, presidents_list in data_dict.items():
         for president in presidents_list:
             age_at_office = (president["took_office"] - president["born"]).days // 365
-            time_in_office = (president["left_office"] - president["born"]).days
+            time_in_office = (president["left_office"] - president["took_office"]).days
 
             president = President(
                 name=president["name"],
