@@ -117,10 +117,8 @@ def get_in_power_longest(presidents):
 def get_repeat_pres(presidents):
     """Return a list of presidents who have taken office >1 time. This does not return presidents who had back-to-back-turns in office."""
     pres_counts = Counter(p.name for p in presidents)
-    repeat_pres, *_ = list(pres for pres in pres_counts if pres_counts[pres] > 1) + [
-        None
-    ]
-    return repeat_pres
+    repeat_pres = [pres for pres in pres_counts if pres_counts[pres] > 1]
+    return ", ".join(repeat_pres) if repeat_pres else "No presidents"
 
 
 def output_message(*args):
