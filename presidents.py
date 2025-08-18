@@ -1,4 +1,3 @@
-from datetime import date, datetime
 from collections import namedtuple, Counter, defaultdict
 from statistics import mean
 from operator import itemgetter
@@ -14,19 +13,36 @@ def main():
     youngest_pres = get_est_pres(president_namedtuples, "youngest")
     oldest_pres = get_est_pres(president_namedtuples, "oldest")
     mean_age = get_mean_age(president_namedtuples)
-    month = get_month_or_year(president_namedtuples, "month")
+    month = get_month(president_namedtuples)
     decade = get_decade(president_namedtuples)
     in_power_longest = get_in_power_longest(president_namedtuples)
     repeat_pres = get_repeat_pres(president_namedtuples)
     output_message(
-        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month, decade, in_power_longest, repeat_pres
+        party,
+        youngest_rep,
+        oldest_dem,
+        youngest_pres,
+        oldest_pres,
+        mean_age,
+        month,
+        decade,
+        in_power_longest,
+        repeat_pres,
     )
 
 
 def get_presidents_data(data_dict):
     President = namedtuple(
         "President",
-        ["name", "party", "born", "took_office", "took_office_age", "left_office", "in_office"],
+        [
+            "name",
+            "party",
+            "born",
+            "took_office",
+            "took_office_age",
+            "left_office",
+            "in_office",
+        ],
     )
 
     presidents = []
@@ -43,7 +59,7 @@ def get_presidents_data(data_dict):
                 took_office=president["took_office"],
                 took_office_age=age_at_office,
                 left_office=president["left_office"],
-                in_office=time_in_office
+                in_office=time_in_office,
             )
 
             presidents.append(president)
@@ -73,16 +89,22 @@ def get_est_pres(presidents, youngest_or_oldest, pres_party=None):
 def get_mean_age(presidents):
     return mean([p.took_office_age for p in presidents])
 
-def get_month_or_year(presidents, time_string):
-    """Return the most common month or year for presidents to take office, then return it to main, depending on the args passed into the function."""
-    dt_format  = "%B" if time_string.lower() == "month" else "%Y"
-    month_or_year_counts = Counter(p.took_office.strftime(dt_format) for p in presidents)
+
+def get_month(presidents):
+    """Return the most common month for presidents to take office, then return it to main."""
+    month_or_year_counts = Counter(
+        p.took_office.strftime("%B") for p in presidents
+    )
     return month_or_year_counts.most_common(1)[0][0]
+
 
 def get_decade(presidents):
     """Return the most common decade for presidents to take office, then return it to main."""
-    month_or_year_counts = Counter(p.took_office.strftime("%Y")[:-1] for p in presidents)
+    month_or_year_counts = Counter(
+        p.took_office.strftime("%Y")[:-1] for p in presidents
+    )
     return month_or_year_counts.most_common(1)[0][0] + "0"
+
 
 def get_in_power_longest(presidents):
     """Instantiate a default dict with the party names as keys and corresponding values of a count of the total number of days in office each president from that party had. Return the party with the highest count."""
@@ -91,10 +113,13 @@ def get_in_power_longest(presidents):
         d[p.party] += p.in_office
     return sorted(d.items(), key=itemgetter(1))[-1][0]
 
+
 def get_repeat_pres(presidents):
     """Return a list of presidents who have taken office >1 time. This does not return presidents who had back-to-back-turns in office."""
     pres_counts = Counter(p.name for p in presidents)
-    repeat_pres, *_ = list(pres for pres in pres_counts if pres_counts[pres] > 1) + [None]
+    repeat_pres, *_ = list(pres for pres in pres_counts if pres_counts[pres] > 1) + [
+        None
+    ]
     return repeat_pres
 
 
