@@ -100,10 +100,10 @@ def get_month(presidents):
 
 def get_decade(presidents):
     """Return the most common decade for presidents to take office, then return it to main."""
-    month_or_year_counts = Counter(
-        p.took_office.strftime("%Y")[:-1] for p in presidents
+    decade_counts = Counter(
+        str(p.took_office.year // 10 * 10) for p in presidents
     )
-    return month_or_year_counts.most_common(1)[0][0] + "0"
+    return decade_counts.most_common(1)[0][0]
 
 
 def get_in_power_longest(presidents):
