@@ -15,11 +15,11 @@ def main():
     oldest_pres = get_est_pres(president_namedtuples, "oldest")
     mean_age = get_mean_age(president_namedtuples)
     month = get_month_or_year(president_namedtuples, "month")
-    year = get_month_or_year(president_namedtuples, "Year")
+    decade = get_decade(president_namedtuples)
     in_power_longest = get_in_power_longest(president_namedtuples)
     repeat_pres = get_repeat_pres(president_namedtuples)
     output_message(
-        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month, year, in_power_longest, repeat_pres
+        party, youngest_rep, oldest_dem, youngest_pres, oldest_pres, mean_age, month, decade, in_power_longest, repeat_pres
     )
 
 
@@ -74,10 +74,15 @@ def get_mean_age(presidents):
     return mean([p.took_office_age for p in presidents])
 
 def get_month_or_year(presidents, time_string):
-    """Return the most common month or year for presidents to take office, then return it, depending on the args passed into the function."""
+    """Return the most common month or year for presidents to take office, then return it to main, depending on the args passed into the function."""
     dt_format  = "%B" if time_string.lower() == "month" else "%Y"
-    month_counts = Counter(p.took_office.strftime(dt_format) for p in presidents)
-    return month_counts.most_common(1)[0][0]
+    month_or_year_counts = Counter(p.took_office.strftime(dt_format) for p in presidents)
+    return month_or_year_counts.most_common(1)[0][0]
+
+def get_decade(presidents):
+    """Return the most common decade for presidents to take office, then return it to main."""
+    month_or_year_counts = Counter(p.took_office.strftime("%Y")[:-1] for p in presidents)
+    return month_or_year_counts.most_common(1)[0][0] + "0"
 
 def get_in_power_longest(presidents):
     """Instantiate a default dict with the party names as keys and corresponding values of a count of the total number of days in office each president from that party had. Return the party with the highest count."""
@@ -95,7 +100,7 @@ def get_repeat_pres(presidents):
 
 def output_message(*args):
     intro = "\nHere are some facts about US presidents:\n\n"
-    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office.\n The {args[8]} party has been in power for longest.\n {args[9]} have taken office more than once."
+    text = f"The {args[0]} party has had most presidents.\n {args[1]} was the youngest Republican president when they took office.\n {args[2]} was the oldest Democrat president when they took office.\n {args[3]} was the youngest president (from any party) when they took office.\n {args[4]} was the oldest president (from any party) when they took office.\n {args[5]} is the average age of becoming president.\n {args[6]} saw the most presidents take office.\n {args[7]} was the decade that saw the most presidents take office.\n The {args[8]} party has been in power for longest.\n {args[9]} have taken office more than once."
     print(intro, text)
 
 
@@ -113,6 +118,4 @@ if __name__ == "__main__":
 #   * What is the average age of becoming president?
 #   * Which party has been in power for longest?
 #   * Which presidents have taken office more than once?
-
-# TODO still:
 #   * Which decade saw the most presidents take office?
