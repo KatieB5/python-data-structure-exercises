@@ -4,10 +4,37 @@
 # Usage:
 #
 # $ python browser_stats.py
-
+from collections import namedtuple
 from browser_stats_data import browser_stats_by_year_and_month
 
-print('browser_stats_by_year_and_month is a {} with {} elements'.format(type(browser_stats_by_year_and_month).__name__, len(browser_stats_by_year_and_month)))
+BrowserRecord = namedtuple(
+    "BrowserRecord", ["year", "month", "browser", "market_share"]
+)
+
+
+def main():
+    get_browser_tuples(browser_stats_by_year_and_month)
+
+
+def get_browser_tuples(data):
+    browser_tuples = []
+
+    for year, months in data.items():
+        for month, browsers in months.items():
+            for browser, market_share in browsers.items():
+                browser_tuples.append(
+                    BrowserRecord(
+                        year=year,
+                        month=month,
+                        browser=browser,
+                        market_share=market_share,
+                    )
+                )
+    return browser_tuples
+
+
+if __name__ == "__main__":
+    main()
 
 
 # TODO:
@@ -19,4 +46,4 @@ print('browser_stats_by_year_and_month is a {} with {} elements'.format(type(bro
 #   * In which month was Firefox's popularity highest?
 #   * In which month was the combined popularity of Safari and Opera highest?
 #   * Which month saw the biggest percentage point rise in Chrome's popularity?
-#   * Which month saw the biggest percentage point 
+#   * Which month saw the biggest percentage point
