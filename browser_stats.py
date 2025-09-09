@@ -5,6 +5,7 @@
 #
 # $ python browser_stats.py
 from collections import namedtuple, defaultdict
+from datetime import datetime
 from browser_stats_data import browser_stats_by_year_and_month
 
 BrowserRecord = namedtuple(
@@ -60,7 +61,7 @@ def firefox_most_popular(data_tuples):
     for browser_record in data_tuples:
         month_year_browsers[(browser_record.year, browser_record.month)].append(browser_record)
 
-    for (year, month), browser_records in month_year_browsers.items():
+    for (year, month), browser_records in sorted(month_year_browsers.items(), key=lambda x: (x[0][0], datetime.strptime(x[0][1], "%B").month)):
         max_market_share = max(browser_records, key=lambda record: record.market_share)
         if max_market_share.browser == "Firefox":
             return [month, year]
