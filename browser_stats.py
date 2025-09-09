@@ -13,7 +13,8 @@ BrowserRecord = namedtuple(
 
 
 def main():
-    get_browser_tuples(browser_stats_by_year_and_month)
+    browser_tuples = get_browser_tuples(browser_stats_by_year_and_month)
+    get_reporting_period(browser_tuples)
 
 
 def get_browser_tuples(data):
@@ -32,6 +33,10 @@ def get_browser_tuples(data):
                 )
     return browser_tuples
 
+def get_reporting_period(data_tuples):
+    reporting_period = f"{data_tuples[-1].month} {data_tuples[-1].year} to {data_tuples[0].month} {data_tuples[0].year}"
+    print(data_tuples)
+    return reporting_period
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,4 @@
 # Env
 venv/
 .pytest_cache/
+*.txt
