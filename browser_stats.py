@@ -4,7 +4,7 @@
 # Usage:
 #
 # $ python browser_stats.py
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 from browser_stats_data import browser_stats_by_year_and_month
 
 BrowserRecord = namedtuple(
@@ -16,7 +16,8 @@ def main():
     browser_tuples = get_browser_tuples(browser_stats_by_year_and_month)
     reporting_period = get_reporting_period(browser_tuples)
     market_share_over_50 = get_over_50_market_share_browsers(browser_tuples)
-    display_report(reporting_period, market_share_over_50)
+    firefox_most_popular_month = firefox_most_popular(browser_tuples)
+    display_report(reporting_period, market_share_over_50, firefox_most_popular_month)
 
 
 def get_browser_tuples(data):
@@ -40,18 +41,31 @@ def get_reporting_period(data_tuples):
     return reporting_period
 
 def get_over_50_market_share_browsers(data_tuples):
-    browser_list = []
-    for browser in data_tuples:
-        if browser.market_share > 50 and browser.browser not in browser_list:
-            browser_list.append(browser.browser)
+    browser_record_list = []
+    for browser_record in data_tuples:
+        if browser_record.market_share > 50 and browser_record.browser not in browser_record_list:
+            browser_record_list.append(browser_record.browser)
 
-    return browser_list
+    return browser_record_list
 
 
-def display_report(reporting_period, market_share_over_50):
+def display_report(reporting_period, market_share_over_50, firefox_most_popular_month):
     print("A report of browser usage statistics, as recorded by w3schools.com:")
     print(f"This report covers the period {reporting_period}")
     print(f"The following browsers had had over 50% of market share: {', '.join(market_share_over_50)}")
+    print(f"Firefox first became the most popular browser in {firefox_most_popular_month[0]} {firefox_most_popular_month[1]}")
+
+def firefox_most_popular(data_tuples):
+    month_year_browsers = defaultdict(list)
+    for browser_record in data_tuples:
+        month_year_browsers[(browser_record.year, browser_record.month)].append(browser_record)
+
+    for (year, month), browser_records in month_year_browsers.items():
+        max_market_share = max(browser_records, key=lambda record: record.market_share)
+        if max_market_share.browser == "Firefox":
+            return [max_market_share.month, max_market_share.year]
+
+# (2009, 'June'): [BrowserRecord(year=2009, month='June', browser='Chrome', market_share=6.0), BrowserRecord(year=2009, month='June', browser='IE', market_share=40.7), BrowserRecord(year=2009, month='June', browser='Firefox', market_share=47.3), BrowserRecord(year=2009, month='June', browser='Safari', market_share=3.1), BrowserRecord(year=2009, month='June', browser='Opera', market_share=2.1)]
 
 if __name__ == "__main__":
     main()
