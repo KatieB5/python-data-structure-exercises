@@ -63,9 +63,7 @@ def firefox_most_popular(data_tuples):
     for (year, month), browser_records in month_year_browsers.items():
         max_market_share = max(browser_records, key=lambda record: record.market_share)
         if max_market_share.browser == "Firefox":
-            return [max_market_share.month, max_market_share.year]
-
-# (2009, 'June'): [BrowserRecord(year=2009, month='June', browser='Chrome', market_share=6.0), BrowserRecord(year=2009, month='June', browser='IE', market_share=40.7), BrowserRecord(year=2009, month='June', browser='Firefox', market_share=47.3), BrowserRecord(year=2009, month='June', browser='Safari', market_share=3.1), BrowserRecord(year=2009, month='June', browser='Opera', market_share=2.1)]
+            return [month, year]
 
 if __name__ == "__main__":
     main()
